@@ -3,7 +3,7 @@ import React from 'react'
 
 const FETCH_BOARD = gql`
   query {
-    fetchBoard(number: 1){
+    fetchBoard(number:1){
       writer
       title
       contents
@@ -11,7 +11,7 @@ const FETCH_BOARD = gql`
   }
 `
 
-export const BoardDetailPage = () => {
+const BoardDetailPage = () => {
   const {data} = useQuery(FETCH_BOARD)
 
   console.log(data)
@@ -21,3 +21,4 @@ export const BoardDetailPage = () => {
   )
 }
 
+export default BoardDetailPage
