@@ -1,23 +1,5 @@
-import { gql, useQuery } from '@apollo/client'
-import React from 'react'
+import BoardDetail from "../../../src/components/units/board/detail/BoardDetail.container";
 
-const FETCH_BOARD = gql`
-  query {
-    fetchBoard(number: 1){
-      writer
-      title
-      contents
-    }
-  }
-`
-
-export const BoardDetailPage = () => {
-  const {data} = useQuery(FETCH_BOARD)
-
-  console.log(data)
-  
-  return (
-    <div>BoardDetailPage</div>
-  )
+export default function BoardDetailPage() {
+  return <BoardDetail />
 }
-
