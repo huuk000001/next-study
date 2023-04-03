@@ -1,30 +1,30 @@
-import { useState } from "react";
-import { useMutation } from '@apollo/client'
-import { useRouter } from 'next/router'
-import BoardWriteUI from './BoardWrite.presenter'
-import { CREATE_BOARD, UPDATE_BOARD } from './BoardWrite.queries'
+import { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import BoardWriteUI from './BoardWrite.presenter';
+import { FETCH_BOARD, CREATE_BOARD, UPDATE_BOARD } from './BoardWrite.queries';
 
-export default function BoardWrite(props){
-  const router = useRouter()
+export default function BoardWrite(props) {
+  const router = useRouter();
   const [isActive, setIsActive] = useState(false);
 
-  const [writer, setWriter] = useState("");
-  const [password, setPassword] = useState("");
-  const [title, setTitle] = useState("");
-  const [contents, setContents] = useState("");
+  const [writer, setWriter] = useState('');
+  const [password, setPassword] = useState('');
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState('');
 
-  const [writerError, setWriterError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [titleError, setTitleError] = useState("");
-  const [contentsError, setContentsError] = useState("");
+  const [writerError, setWriterError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [titleError, setTitleError] = useState('');
+  const [contentsError, setContentsError] = useState('');
 
-  const [createBoard] = useMutation(CREATE_BOARD)
+  const [createBoard] = useMutation(CREATE_BOARD);
   const [updateBoard] = useMutation(UPDATE_BOARD);
 
-  const onChangeWriter = (event) => {
+  const onChangeWriter = event => {
     setWriter(event.target.value);
-    if(event.target.value !== ""){
-      setWriterError("")
+    if (event.target.value !== '') {
+      setWriterError('');
     }
 
     if (event.target.value && password && title && contents) {
@@ -34,10 +34,10 @@ export default function BoardWrite(props){
     }
   };
 
-  const onChangePassword = (event) => {
+  const onChangePassword = event => {
     setPassword(event.target.value);
-    if(event.target.value !== ""){
-      setPasswordError("")
+    if (event.target.value !== '') {
+      setPasswordError('');
     }
 
     if (writer && event.target.value && title && contents) {
@@ -47,10 +47,10 @@ export default function BoardWrite(props){
     }
   };
 
-  const onChangeTitle = (event) => {
+  const onChangeTitle = event => {
     setTitle(event.target.value);
-    if(event.target.value !== ""){
-      setTitleError("")
+    if (event.target.value !== '') {
+      setTitleError('');
     }
 
     if (writer && password && event.target.value && contents) {
@@ -60,10 +60,10 @@ export default function BoardWrite(props){
     }
   };
 
-  const onChangeContents = (event) => {
+  const onChangeContents = event => {
     setContents(event.target.value);
-    if(event.target.value !== ""){
-      setContentsError("")
+    if (event.target.value !== '') {
+      setContentsError('');
     }
 
     if (writer && password && title && event.target.value) {
@@ -75,16 +75,16 @@ export default function BoardWrite(props){
 
   const onClickSubmit = async () => {
     if (!writer) {
-      setWriterError("작성자를 입력해주세요.");
+      setWriterError('작성자를 입력해주세요.');
     }
     if (!password) {
-      setPasswordError("비밀번호를 입력해주세요.");
+      setPasswordError('비밀번호를 입력해주세요.');
     }
     if (!title) {
-      setTitleError("제목을 입력해주세요.");
+      setTitleError('제목을 입력해주세요.');
     }
     if (!contents) {
-      setContentsError("내용을 입력해주세요.");
+      setContentsError('내용을 입력해주세요.');
     }
     if (writer && password && title && contents) {
       try {
@@ -94,50 +94,54 @@ export default function BoardWrite(props){
               writer: writer,
               password: password,
               title: title,
-              contents: contents
-            }
-          }
-        })
-        console.log(result.data.createBoard._id)
-        router.push(`/boards/${result.data.createBoard._id}`)
-      } catch(error) {
-        alert(error.message)
+              contents: contents,
+            },
+          },
+        });
+        console.log(result.data.createBoard._id);
+        router.push(`/boards/${result.data.createBoard._id}`);
+      } catch (error) {
+        alert(error.message);
       }
     }
   };
-
+  const onClickGoBack = async () => {
+    router.back();
+  };
   const onClickUpdate = async () => {
+    const recentVariables = {};
+    if (title) recentVariables.title = title;
+    if (contents) recentVariables.contents = contents;
     try {
       const result = await updateBoard({
         variables: {
           boardId: router.query.boardId,
           password: password,
-          updateBoardInput: {
-            title: title,
-            contents: contents
-          },
+          updateBoardInput: recentVariables,
         },
-      })
-      router.push(`/boards/${result.data.updateBoard._id}`)
-    } catch(error) {
-      alert(error.message)
+      });
+      router.push(`/boards/${result.data.updateBoard._id}`);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
   return (
     <BoardWriteUI
-        isActive={isActive}
-        writerError={writerError}
-        passwordError={passwordError}
-        titleError={titleError}
-        contentsError={contentsError}
-        onChangeWriter={onChangeWriter}
-        onChangePassword={onChangePassword}
-        onChangeTitle={onChangeTitle}
-        onChangeContents={onChangeContents}
-        onClickSubmit={onClickSubmit}
-        onClickUpdate={onClickUpdate}
-        isEdit={props.isEdit}
+      data={props.data}
+      isActive={isActive}
+      writerError={writerError}
+      passwordError={passwordError}
+      titleError={titleError}
+      contentsError={contentsError}
+      onChangeWriter={onChangeWriter}
+      onChangePassword={onChangePassword}
+      onChangeTitle={onChangeTitle}
+      onChangeContents={onChangeContents}
+      onClickSubmit={onClickSubmit}
+      onClickUpdate={onClickUpdate}
+      onClickGoBack={onClickGoBack}
+      isEdit={props.isEdit}
     />
-  )
+  );
 }
