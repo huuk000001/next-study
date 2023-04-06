@@ -1,7 +1,5 @@
+import LoginButtonNaver from '@/components/LoginButton/Naver';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import LoginNaver from './Naver';
 
 const Wrapper = styled.div`
   display: flex;
@@ -14,21 +12,9 @@ const Wrapper = styled.div`
 `;
 
 export default function login() {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (window.location.href.includes('access_token')) {
-      window.localStorage.setItem(
-        'token',
-        window.location.href.split('=')[1].split('&')[0] ?? 'none'
-      );
-      router.push('/');
-    }
-  }, []);
-
   return (
     <Wrapper>
-      <LoginNaver />
+      <LoginButtonNaver />
     </Wrapper>
   );
 }
