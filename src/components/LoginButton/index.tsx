@@ -32,7 +32,6 @@ const ButtonCustom = styled(Button)`
 
 export default function LoginButton(props: Props) {
   const { data: session } = useSession();
-
   return (
     <>
       <ButtonCustom
