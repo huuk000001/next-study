@@ -7,42 +7,34 @@ type Props = {
 };
 
 const ButtonCustom = styled(Button)`
-  background: #000;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-position: left 20px center;
+  background-size: 30px;
   &.naver {
-    background-color: #19ce60;
-    color: #fff;
-    border: 1px solid #19ce60;
+    color: #000;
+    border: 2px solid #03c75a;
+    background-image: url(/assets/icon/social/naver.svg);
   }
+
   &.kakao {
-    background-color: #ffe600;
     color: #000;
-    border: 1px solid #ffe600;
-  }
-  &.google {
-    background-color: #fff;
-    color: #000;
-    border: 1px solid #000;
-  }
-  &.github {
-    background-color: #30363d;
-    color: #fff;
-    border: 1px solid #30363d;
+    border: 2px solid #fee500;
+    background-image: url(/assets/icon/social/kakao.svg);
   }
 `;
 
 export default function LoginButton(props: Props) {
   const { data: session } = useSession();
   return (
-    <>
-      <ButtonCustom
-        fullWidth
-        className={props.type}
-        onClick={() => {
-          session && session ? signOut() : signIn(props.type);
-        }}
-      >
-        {session && session ? '로그아웃' : props.type + ' LOGIN'}
-      </ButtonCustom>
-    </>
+    <ButtonCustom
+      fullWidth
+      className={props.type}
+      onClick={() => {
+        session && session ? signOut() : signIn(props.type);
+      }}
+    >
+      {props.type} LOGIN
+    </ButtonCustom>
   );
 }

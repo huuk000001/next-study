@@ -22,13 +22,13 @@ export default function LayoutHeader() {
   return (
     <Header>
       <Inner>
-        <Link href={'/'}>LOGO</Link>
+        <Link href="/">LOGO</Link>
         <nav>
           {session && session.user?.name}
           {session ? (
             <Button onClick={() => signOut()}>로그아웃</Button>
           ) : (
-            <Link href={'/login'}>로그인</Link>
+            <Link href="/login">로그인</Link>
           )}
         </nav>
       </Inner>

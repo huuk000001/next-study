@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  gap: 10px;
   max-width: 500px;
   width: 100%;
   margin: 0 auto;
@@ -29,8 +30,8 @@ export default function login() {
     <Wrapper>
       <LoginButton type="naver" />
       <LoginButton type="kakao" />
-      <LoginButton type="google" />
-      <LoginButton type="github" />
+      {/* <LoginButton type="google" /> */}
+      {/* <LoginButton type="github" /> */}
     </Wrapper>
   );
 }
